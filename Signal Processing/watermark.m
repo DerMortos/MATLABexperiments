@@ -37,3 +37,4 @@ marked = wm + flute;
 figure;
 pspectrum(marked,fs);
 soundsc(marked,fs);
+
