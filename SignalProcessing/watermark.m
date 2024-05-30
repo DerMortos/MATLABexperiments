@@ -3,17 +3,22 @@
 [flute, fs] = audioread("246666__mtg__overall-quality-of-single-note-flute-c5.wav");
 
 % show entire duratrion of signal with strip plot
+figure(1);
+subplot(3,2,1);
 strips(flute,2,fs);
+title('raw flute wavform');
 
 %extract a portion of the signal
 flute = flute(.9*fs:6*fs);
-figure;
+subplot(3,2,2);
 strips(flute,2,fs);
+title('trimmed signal');
 
 
 %Power spectrum @ frequencies
+subplot(3,2,3)
 pspectrum(flute,fs);
-
+title('Power Spectrum of flute waveform');
 
 %%%%
 %%%%
@@ -30,11 +35,31 @@ t = t/fs;
 % audible. any location above 5kHz would work for the watermark.
 f = 6000;
 wm = sin(2*pi*f*t)*.0001;
-figure;
+subplot(3,2,4);
 pspectrum(wm,fs);
+title('6kHz signal for watermark');
 
 marked = wm + flute;
-figure;
+subplot(3,2,5);
 pspectrum(marked,fs);
+title('spectrogram of watermaked flute waveform')
 soundsc(marked,fs);
 
+% generate chirp insetead of a spike
+wm2 = chirp(t,6000,t(end),7000)*.001;
+figure(2);
+subplot(2,2,1);
+pspectrum(wm,fs);
+title('Generated 6-7 kHz Chirp');
+
+%Plot the spectrogram of the chirp signal
+subplot(2,2,2);
+pspectrum(wm2,fs,"spectrogram");
+title('spectrograph of chirp');
+
+% combined chirp and flute signals
+marked2 = wm2 + flute;
+subplot(2,2,3);
+pspectrum(marked2,fs);
+title('spectrograph of watermarkd chirped flute wavform');
+soundsc(marked2,fs);
