@@ -63,4 +63,3 @@ subplot(2,2,3);
 pspectrum(marked2,fs);
 title('spectrograph of watermarkd chirped flute wavform');
 soundsc(marked2,fs);
-!git

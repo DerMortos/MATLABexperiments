@@ -1,0 +1,23 @@
+% generate a signal with two tones one at 300 Hz  and 3000 Hz.
+% explore how downsampling affects aliasing
+
+fs = 24000;
+t = 0:1/fs:0.5;
+sig = sin(2*pi*300*t)+sin(2*pi*3000*t);
+pspectrum(sig,fs)
+xline(2,"r--","New Nyquist Frequency")
+
+% downsampling signal w/ aliasing
+sigbad = downsample(sig,6);
+figure(1)
+subplot(1,2,1);
+pspectrum(sigbad,fs/6);     % 3kHz  tone is aliased to 1kHz
+title('Bad Downsampled Signal');
+
+% use anialiasing filter before downsampling. 
+fsNew = 4000;               % fsNew/2 is Nyquist frequency after downsampling
+sigfilt= lowpass(sig,fsNew/2,fs);
+sigfilt = downsample(sigfilt,6);
+subplot(1,2,2);
+pspectrum(sigfilt,fs/6)     % power of aliased to
+title('Lowpass Filterd Downsampled Signal');
